@@ -22,6 +22,8 @@
 #include "irq_lptmr0.h"
 #include "irq_lpuart0.h"
 #include "modem.h"
+#include "sensor_temp.h"
+
 
 /* TODO: insert other definitions and declarations here. */
 
@@ -79,8 +81,15 @@ int main(void) {
     Timer_Init();
     Modem_Init();
     Alarma_Init();
+    float voltaje1;
+    int e;
     while(1) {
-    	Modem_Task_Run();
+    	//Modem_Task_Run();
+    	voltaje1 = SenTempObtenerDatoCenti();
+    	printf("%f Volt\r\n",voltaje1);
+    	for (e = 0; e < 8000000; ++e) {
+
+		}
     }
     return 0 ;
 }

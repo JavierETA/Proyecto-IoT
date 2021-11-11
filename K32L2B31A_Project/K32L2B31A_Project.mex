@@ -682,7 +682,7 @@
                <description></description>
                <options/>
                <dependencies>
-                  <dependency resourceType="PeripheralUnifiedSignal" resourceId="ADC0.adc_se.13" description="Signal SE of the channel 13 of the peripheral ADC0 is not routed." problem_level="1" source="Peripherals:BOARD_InitPeripherals">
+                  <dependency resourceType="PeripheralUnifiedSignal" resourceId="ADC0.adc_se.23" description="Signal SE of the channel 23 of the peripheral ADC0 is not routed." problem_level="1" source="Peripherals:BOARD_InitPeripherals">
                      <feature name="routed" evaluation="">
                         <data type="Boolean">true</data>
                      </feature>
@@ -752,7 +752,7 @@
                            <struct name="0">
                               <setting name="channelName" value=""/>
                               <setting name="enableDifferentialConversion" value="false"/>
-                              <setting name="channelNumber" value="SE.13"/>
+                              <setting name="channelNumber" value="SE.23"/>
                               <setting name="enableInterruptOnConversionCompleted" value="false"/>
                               <setting name="channelGroup" value="0"/>
                               <setting name="initializeChannel" value="true"/>

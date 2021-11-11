@@ -29,7 +29,7 @@ extern "C" {
 #define ADC0_IRQN ADC0_IRQn
 /* ADC0 interrupt handler identifier. */
 #define ADC0_IRQHANDLER ADC0_IRQHandler
-/* Channel 0 (SE.13) conversion control group. */
+/* Channel 0 (SE.23) conversion control group. */
 #define ADC0_CH0_CONTROL_GROUP 0
 /* BOARD_InitPeripherals defines for LPTMR0 */
 /* Definition of peripheral ID */

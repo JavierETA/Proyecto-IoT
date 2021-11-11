@@ -115,7 +115,7 @@ instance:
       - 0:
         - channelName: ''
         - enableDifferentialConversion: 'false'
-        - channelNumber: 'SE.13'
+        - channelNumber: 'SE.23'
         - enableInterruptOnConversionCompleted: 'false'
         - channelGroup: '0'
         - initializeChannel: 'true'
@@ -123,7 +123,7 @@ instance:
 /* clang-format on */
 adc16_channel_config_t ADC0_channelsConfig[1] = {
   {
-    .channelNumber = 13U,
+    .channelNumber = 23U,
     .enableDifferentialConversion = false,
     .enableInterruptOnConversionCompleted = false,
   }

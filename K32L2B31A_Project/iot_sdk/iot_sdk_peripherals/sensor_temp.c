@@ -61,7 +61,7 @@
   	uint32_t resultadoADC;
   	float voltajeADC;
   	resultadoADC = ADC16_GetChannelConversionValue(SenTemp_ADC16_BASE, SenTemp_ADC16_CHANNEL_GROUP);
-  	voltajeADC = (3.0*resultadoADC)/4095;
+  	voltajeADC = (3.3*resultadoADC)/4095;
 
    	return(voltajeADC);
   }
