@@ -10,6 +10,7 @@
  * @file    K32L2B31A_Project.c
  * @brief   Application entry point.
  */
+#include <sensor_temp1.h>
 #include <stdio.h>
 #include "board.h"
 #include "peripherals.h"
@@ -22,7 +23,7 @@
 #include "irq_lptmr0.h"
 #include "irq_lpuart0.h"
 #include "modem.h"
-#include "sensor_temp.h"
+#include "sensor_temp1.h"
 
 
 /* TODO: insert other definitions and declarations here. */

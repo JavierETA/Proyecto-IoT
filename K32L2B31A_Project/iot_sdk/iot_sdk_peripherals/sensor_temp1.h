@@ -6,8 +6,8 @@
  * @details
  *
  */
-#ifndef IOT_SDK_PERIPHERALS_SENSOR_TEMP_H_
-#define IOT_SDK_PERIPHERALS_SENSOR_TEMP_H_
+#ifndef IOT_SDK_PERIPHERALS_SENSOR_TEMP1_H_
+#define IOT_SDK_PERIPHERALS_SENSOR_TEMP1_H_
 /*******************************************************************************
  * Includes
  ******************************************************************************/
@@ -43,4 +43,4 @@
 /** @} */ // end of sensor de temperatura group
 /** @} */ // end of periferico group
 
-#endif /* IOT_SDK_PERIPHERALS_SENSOR_TEMP_H_ */
+#endif /* IOT_SDK_PERIPHERALS_SENSOR_TEMP1_H_ */
