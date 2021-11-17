@@ -9,7 +9,7 @@
 /*******************************************************************************
  * Includes
  ******************************************************************************/
-#include <sensor_temp1.h>
+#include <sensor1.h>
 #include "peripherals.h"
 
 /*******************************************************************************
@@ -21,10 +21,10 @@
  * Private Prototypes
  ******************************************************************************/
 //Inicia captura por ADC de voltaje generado por sensor de temperatura
- void SenTempIniciarCap(void);
+ void SenTempIniciarCap1(void);
 //-----------------------------------------------------------------------------
 //Espera que el ADC obtenga el resultado
- void SenTempEsperarResult(void);
+ void SenTempEsperarResult1(void);
 
 
 /*******************************************************************************
@@ -40,13 +40,13 @@
 /*******************************************************************************
  * Private Source Code
  ******************************************************************************/
- void SenTempIniciarCap(void){
-      ADC16_SetChannelConfig(SenTemp_ADC16_BASE, SenTemp_ADC16_CHANNEL_GROUP, & ADC0_channelsConfig[1]);
+ void SenTempIniciarCap1(void){
+      ADC16_SetChannelConfig(SenTemp_ADC16_BASE1, SenTemp_ADC16_CHANNEL_GROUP1, & ADC0_channelsConfig[1]);
 
   }
 
-  void SenTempEsperarResult(void){
-  	while (0U == (kADC16_ChannelConversionDoneFlag & ADC16_GetChannelStatusFlags(SenTemp_ADC16_BASE, SenTemp_ADC16_CHANNEL_GROUP))){
+  void SenTempEsperarResult1(void){
+  	while (0U == (kADC16_ChannelConversionDoneFlag & ADC16_GetChannelStatusFlags(SenTemp_ADC16_BASE1, SenTemp_ADC16_CHANNEL_GROUP1))){
   	}
   }
 
@@ -55,12 +55,12 @@
  * Public Source Code
  ******************************************************************************/
 
-  float SenTempObtenerDatoCenti(void){
-  	SenTempIniciarCap();
-  	SenTempEsperarResult();
+  float SenTempObtenerDatoCenti1(void){
+  	SenTempIniciarCap1();
+  	SenTempEsperarResult1();
   	uint32_t resultadoADC;
   	float voltajeADC;
-  	resultadoADC = ADC16_GetChannelConversionValue(SenTemp_ADC16_BASE, SenTemp_ADC16_CHANNEL_GROUP);
+  	resultadoADC = ADC16_GetChannelConversionValue(SenTemp_ADC16_BASE1, SenTemp_ADC16_CHANNEL_GROUP1);
   	voltajeADC = (3.3*resultadoADC)/4095;
 
    	return(voltajeADC);
