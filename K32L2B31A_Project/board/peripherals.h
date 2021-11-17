@@ -29,8 +29,10 @@ extern "C" {
 #define ADC0_IRQN ADC0_IRQn
 /* ADC0 interrupt handler identifier. */
 #define ADC0_IRQHANDLER ADC0_IRQHandler
-/* Channel 0 (SE.23) conversion control group. */
+/* Channel 0 (SE.13) conversion control group. */
 #define ADC0_CH0_CONTROL_GROUP 0
+/* Channel 1 (SE.8) conversion control group. */
+#define ADC0_CH1_CONTROL_GROUP 0
 /* BOARD_InitPeripherals defines for LPTMR0 */
 /* Definition of peripheral ID */
 #define LPTMR0_PERIPHERAL LPTMR0
@@ -58,7 +60,7 @@ extern "C" {
 /***********************************************************************************************************************
  * Global variables
  **********************************************************************************************************************/
-extern adc16_channel_config_t ADC0_channelsConfig[1];
+extern adc16_channel_config_t ADC0_channelsConfig[2];
 extern const adc16_config_t ADC0_config;
 extern const adc16_channel_mux_mode_t ADC0_muxMode;
 extern const lptmr_config_t LPTMR0_config;
