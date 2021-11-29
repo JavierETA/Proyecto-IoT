@@ -1,6 +1,6 @@
 
 import pika, os
-from influxdb_client import InfluxDBClient, Point
+from influxdb_client import InfluxDBClient, Point, WritePrecision
 from influxdb_client.client.write_api import SYNCHRONOUS
 from datetime import datetime, timedelta
 
@@ -12,10 +12,10 @@ rabbit_password = os.environ.get("RABBIT_PASSWORD")
 queue_name  = "mensajes"
 
 client = InfluxDBClient(url="http://influxdb:8086", token=db_token, org=my_org)
-
+write_api = client.write_api(write_options=SYNCHRONOUS)
 query_api = client.query_api()
-
-def update_data(self, msg):
+"""
+def update_data(msg):
     string_list = msg.split(",")
     time  = datetime.datetime.now()
     time_local = time - timedelta(hours=5)
@@ -29,15 +29,21 @@ def update_data(self, msg):
     write_api.write(my_bucket, my_org, point)
     
     return
-
+"""
 def process_function(msg):
     message = msg.decode("utf-8")
-    print(message)
-    update_data(message)
+    string_list = message.split(",")
+
+    temperatura = float(string_list[0])
+    humidity = float(string_list[1])
+    methane = float(string_list[2])
+
+    point = Point("DATOS").field("TEMPERATURA", temperatura).field("HUMIDITY", humidity).field("METHANE", methane).time(datetime.utcnow(), WritePrecision.NS)
+    write_api.write(my_bucket, my_org, point)
     
     return
 
-while True:
+while 1:
 
     url = os.environ.get('CLOUDAMQP_URL', 'amqp://{}:{}@rabbit:5672/%2f'.format(rabbit_user, rabbit_password))
     params = pika.URLParameters(url)
