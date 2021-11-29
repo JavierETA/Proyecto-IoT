@@ -18,14 +18,14 @@ query_api = client.query_api()
 def update_data(msg):
     message = msg
     string_list = message.split(",")
-    time  = datetime.datetime.now()
-    time_local = time - timedelta(hours=5)
+    #time  = datetime.datetime.now()
+    #time_local = time - timedelta(hours=5)
 
     temperatura = float(string_list[0])
     humidity = float(string_list[1])
     methane = float(string_list[2])
 
-    point = Point("DATOS").field("DATE", time_local).field("TEMPERATURA", temperatura).field("HUMIDITY", humidity).field("METHANE", methane)
+    point = Point("DATOS").field("TEMPERATURA", temperatura).field("HUMIDITY", humidity).field("METHANE", methane)
     write_api.write(my_bucket, my_org, point)
     
     return
