@@ -25,6 +25,20 @@ extern "C" {
  */
 void BOARD_InitBootPins(void);
 
+/*! @name PORTD6 (number 63), J2[8]/D11/SPI1_MOSI/LCD_P46
+  @{ */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_LED_ALARMA_FGPIO FGPIOD             /*!<@brief FGPIO peripheral base pointer */
+#define BOARD_LED_ALARMA_GPIO GPIOD               /*!<@brief GPIO peripheral base pointer */
+#define BOARD_LED_ALARMA_GPIO_PIN_MASK (1U << 6U) /*!<@brief GPIO pin mask */
+
+/* Symbols to be used with PORT driver */
+#define BOARD_LED_ALARMA_PORT PORTD               /*!<@brief PORT peripheral base pointer */
+#define BOARD_LED_ALARMA_PIN 6U                   /*!<@brief PORT pin number */
+#define BOARD_LED_ALARMA_PIN_MASK (1U << 6U)      /*!<@brief PORT pin mask */
+                                                  /* @} */
+
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
  *
