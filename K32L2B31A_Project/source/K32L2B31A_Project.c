@@ -82,16 +82,8 @@ int main(void) {
     Timer_Init();
     Modem_Init();
     Alarma_Init();
-    float voltaje1, voltaje2;
-    int e;
     while(1) {
-    	//Modem_Task_Run();
-    	voltaje1 = SenTempObtenerDatoCenti1();
-    	voltaje2 = SenTempObtenerDatoCenti2();
-    	printf("voltaje1 = %f V, voltaje2 = %f V\r\n",voltaje1,voltaje2);
-    	for (e = 0; e < 8000000; ++e) {
-
-		}
+    	Modem_Task_Run();
     }
     return 0 ;
 }
