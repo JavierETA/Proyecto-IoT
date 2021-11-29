@@ -12,7 +12,7 @@ rabbit_password = os.environ.get("RABBIT_PASSWORD")
 queue_name  = "mensajes"
 
 client = InfluxDBClient(url="http://influxdb:8086", token=db_token, org=my_org)
-write_api = client.write_api(write_options=SYNCHRONOUS)
+
 query_api = client.query_api()
 
 def update_data(self, msg):
@@ -24,6 +24,7 @@ def update_data(self, msg):
     humidity = float(string_list[1])
     methane = float(string_list[2])
 
+    write_api = client.write_api(write_options=SYNCHRONOUS)
     point = Point("DATOS").field("DATE", time_local).field("TEMPERATURA", temperatura).field("HUMIDITY", humidity).field("METHANE", methane)
     write_api.write(my_bucket, my_org, point)
     
