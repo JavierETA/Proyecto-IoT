@@ -20,7 +20,7 @@
 #include "fsl_debug_console.h"
 #include "sensor1.h"
 #include "sensor2.h"
-
+#include "alarma.h"
 
 /*******************************************************************************
  * Definitions
@@ -279,14 +279,17 @@ void Modem_Check_URC_Run(void){
 	//!!! Recepcion de URCs
 	if(Respuesta_Modem("+QMTRECV")){ // mensaje MQTT
 		recibiMsgQtt = 1;
-		if(Test_Rta_Modem("LED ON")){
+		if(Test_Rta_Modem("activar")){
 			//led_on_green();
-		}
-	}else{  // algun otro URC
-		if(Test_Rta_Modem("OK")){
+			activarAlarma();
 
 		}
+	}else {
+		if(Test_Rta_Modem("desactivar")){	// algun otro URC
+			apagarAlarma();
+		}
 	}
+
 }
 
 char Recibido_URC(void){
