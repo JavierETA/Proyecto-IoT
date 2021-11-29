@@ -16,7 +16,8 @@ write_api = client.write_api(write_options=SYNCHRONOUS)
 query_api = client.query_api()
 
 def update_data(msg):
-    string_list = msg.split(",")
+    message = msg
+    string_list = message.split(",")
     time  = datetime.datetime.now()
     time_local = time - timedelta(hours=5)
 
@@ -24,7 +25,6 @@ def update_data(msg):
     humidity = float(string_list[1])
     methane = float(string_list[2])
 
-    write_api = client.write_api(write_options=SYNCHRONOUS)
     point = Point("DATOS").field("DATE", time_local).field("TEMPERATURA", temperatura).field("HUMIDITY", humidity).field("METHANE", methane)
     write_api.write(my_bucket, my_org, point)
     
@@ -33,7 +33,7 @@ def update_data(msg):
 def process_function(msg):
     message = msg.decode("utf-8")
     update_data(message)
-    
+
     return
 
 while 1:
