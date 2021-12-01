@@ -9,7 +9,7 @@ db_token = os.environ.get("DOCKER_INFLUXDB_INIT_ADMIN_TOKEN")
 my_org = os.environ.get("DOCKER_INFLUXDB_INIT_ORG")
 rabbit_user = os.environ.get("RABBIT_USER")
 rabbit_password = os.environ.get("RABBIT_PASSWORD")
-queue_name  = "mensajes"
+queue_name  = "topic/mediciones"
 
 client = InfluxDBClient(url="http://influxdb:8086", token=db_token, org=my_org)
 write_api = client.write_api(write_options=SYNCHRONOUS)
