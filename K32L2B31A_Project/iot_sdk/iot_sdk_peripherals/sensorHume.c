@@ -58,8 +58,9 @@ float SenHumeObtenerDatoRH(void){
 	SenHumeIniciarCap();
 	SenHumeEsperarResult();
 	uint32_t resultadoADC;
-	float voltajeADC;
+	float voltajeADC, HumeRH;
 	resultadoADC = ADC16_GetChannelConversionValue(SenHume_ADC16_BASE, SenHume_ADC16_CHANNEL_GROUP);
 	voltajeADC = (3.3*resultadoADC)/4095;
-	return(voltajeADC);
+	HumeRH = -12.5+(41.667*voltajeADC);
+	return(HumeRH);
 }

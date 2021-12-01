@@ -58,9 +58,10 @@ void SenMetaEsperarResult(void){
   	SenMetaIniciarCap();
   	SenMetaEsperarResult();
   	uint32_t resultadoADC;
-  	float voltajeADC;
+  	float voltajeADC, voltajeAux, Metappm;
   	resultadoADC = ADC16_GetChannelConversionValue(SenMeta_ADC16_BASE, SenMeta_ADC16_CHANNEL_GROUP);
   	voltajeADC = (3.3*resultadoADC)/4095;
-
-   	return(voltajeADC);
+  	voltajeAux = 0.66*voltajeADC;
+  	Metappm = (voltajeAux + 0.0148148)/(0.002074074);
+   	return(Metappm);
   }
