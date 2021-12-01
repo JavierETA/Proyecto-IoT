@@ -10,6 +10,9 @@
  * Includes
  ******************************************************************************/
 
+#include <sensorHume.h>
+#include <sensorMeta.h>
+#include <sensorTemp.h>
 #include "modem.h"
 #include <stdio.h>
 #include "board.h"
@@ -18,8 +21,6 @@
 #include "clock_config.h"
 #include "K32L2B31A.h"
 #include "fsl_debug_console.h"
-#include "sensor1.h"
-#include "sensor2.h"
 #include "alarma.h"
 
 /*******************************************************************************
@@ -94,10 +95,8 @@ enum{
 	ST_MOD_ACT_CTX,
 	ST_MOD_OPEN_MQTT,
 	ST_MOD_CONN_TOPIC,
-	ST_MOD_CONN_PUB1,
-	ST_MOD_PUBLIC_DAT1,
-	ST_MOD_CONN_PUB2,
-	ST_MOD_PUBLIC_DAT2,
+	ST_MOD_CONN_PUB,
+	ST_MOD_PUBLIC_DAT,
 	ST_MOD_KEEP_ALIVE,  // manda un AT y espera un OK
 	ST_MOD_CHK_URC,
 	ST_MOD_SUB_TOPIC,
@@ -176,7 +175,7 @@ void Modem_Task_Run(void){
 		Modem_Rta_Cmd(TIME_WAIT_RTA_CMD,"OK",ST_MOD_OPEN_MQTT,ST_MOD_ACT_CTX); 	//rx "OK"
 	break;
 	case ST_MOD_OPEN_MQTT:
-		Modem_Send_Cmd("AT+QMTOPEN=0,\"40.121.219.103\",1883\r\n"); //tx "AT+QMTOPEN=0,"142.93.88.99",1883"
+		Modem_Send_Cmd("AT+QMTOPEN=0,\"20.121.197.141\",1883\r\n"); //tx "AT+QMTOPEN=0,"142.93.88.99",1883"
 		Modem_Rta_Cmd(TIME_WAIT_RTA_CMD,"+QMTOPEN: 0,0",ST_MOD_CONN_TOPIC,ST_MOD_OPEN_MQTT);
 	break;
 	case ST_MOD_CONN_TOPIC:
@@ -185,29 +184,20 @@ void Modem_Task_Run(void){
 	break;
 	case ST_MOD_SUB_TOPIC:
 		Modem_Send_Cmd("AT+QMTSUB=0 ,1,\"topic/mensajes\",1\r\n");	//tx "AT+QMTCONN=0,"TOPICO_APP""
-		Modem_Rta_Cmd(TIME_WAIT_RTA_CMD,"+QMTSUB: 0,1,0,1",ST_MOD_CONN_PUB1,ST_MOD_CONN_TOPIC);
+		Modem_Rta_Cmd(TIME_WAIT_RTA_CMD,"+QMTSUB: 0,1,0,1",ST_MOD_CONN_PUB,ST_MOD_CONN_TOPIC);
 	break;
-	case ST_MOD_CONN_PUB1:
-		Modem_Send_Cmd("AT+QMTPUB=0,0,0,0,\"topic/sensor1\"\r\n");
-		Modem_Rta_Cmd(TIME_WAIT_RTA_CMD,">",ST_MOD_PUBLIC_DAT1,ST_MOD_OPEN_MQTT);
+	case ST_MOD_CONN_PUB:
+		Modem_Send_Cmd("AT+QMTPUB=0,0,0,0,\"topic/mediciones\"\r\n");
+		Modem_Rta_Cmd(TIME_WAIT_RTA_CMD,">",ST_MOD_PUBLIC_DAT,ST_MOD_OPEN_MQTT);
 	break;
-	case ST_MOD_PUBLIC_DAT1:
-		printf("%f \r\n",SenTempObtenerDatoCenti1());
+	case ST_MOD_PUBLIC_DAT:
+		printf("%f,%f,%f, \r\n",SenTempObtenerDatoCenti(),SenHumeObtenerDatoRH(),SenMetaObtenerDatoppm());
 		putchar(CNTL_Z);
-		Modem_Rta_Cmd(TIME_WAIT_RTA_CMD,"OK",ST_MOD_PUBLIC_DAT2,ST_MOD_CONN_PUB1);
-	break;
-	case ST_MOD_CONN_PUB2:
-		Modem_Send_Cmd("AT+QMTPUB=0,0,0,0,\"topic/sensor2\"\r\n");
-		Modem_Rta_Cmd(TIME_WAIT_RTA_CMD,">",ST_MOD_PUBLIC_DAT2,ST_MOD_OPEN_MQTT);
-	break;
-	case ST_MOD_PUBLIC_DAT2:
-		printf("%f \r\n",SenTempObtenerDatoCenti2());
-		putchar(CNTL_Z);
-		Modem_Rta_Cmd(TIME_WAIT_RTA_CMD,"OK",ST_MOD_KEEP_ALIVE,ST_MOD_CONN_PUB2);
+		Modem_Rta_Cmd(TIME_WAIT_RTA_CMD,"OK",ST_MOD_KEEP_ALIVE,ST_MOD_CONN_PUB);
 	break;
 	case ST_MOD_KEEP_ALIVE:
 		Modem_Send_Cmd("AT\r\n");
-		Modem_Rta_Cmd(3, "OK", ST_MOD_CONN_PUB1, ST_MOD_KEEP_ALIVE);
+		Modem_Rta_Cmd(3, "OK", ST_MOD_CONN_PUB, ST_MOD_KEEP_ALIVE);
 	break;
 	case ST_MOD_CHK_URC:
 		if(Recibido_URC()){

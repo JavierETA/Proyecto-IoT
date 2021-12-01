@@ -1,13 +1,13 @@
-/*! @file : sensor_temp.h
+/*! @file : sensorMeta.h
  * @author  JAVIER ELIAS TOBON AYUBB
  * @version 1.0.0
  * @date    10/09/2021
- * @brief   Driver para sensor de temperatura
+ * @brief   Driver para sensor de metano
  * @details
  *
  */
-#ifndef IOT_SDK_PERIPHERALS_SENSOR1_H_
-#define IOT_SDK_PERIPHERALS_SENSOR1_H_
+#ifndef IOT_SDK_PERIPHERALS_SENSORMETA_H_
+#define IOT_SDK_PERIPHERALS_SENSORMETA_H_
 /*******************************************************************************
  * Includes
  ******************************************************************************/
@@ -18,15 +18,15 @@
  * @{
  */
 /*!
- * @addtogroup sensor de temperatura
+ * @addtogroup sensor de Metano
  * @{
  */
 /*******************************************************************************
  * Public Definitions
  ******************************************************************************/
-#define SenTemp_ADC16_BASE1          ADC0
-#define SenTemp_ADC16_CHANNEL_GROUP1 0U
-#define SenTemp_ADC16_USER_CHANNEL1  8U
+#define SenMeta_ADC16_BASE          ADC0
+#define SenMeta_ADC16_CHANNEL_GROUP 0U
+#define SenMeta_ADC16_USER_CHANNEL  9U
 /*******************************************************************************
  * External vars
  ******************************************************************************/
@@ -38,9 +38,9 @@
 /*******************************************************************************
  * Public Prototypes
  ******************************************************************************/
- //Returna el resultado ADC del sensor de temperatura
- float SenTempObtenerDatoCenti1(void);
-/** @} */ // end of sensor de temperatura group
+ //Returna el resultado ADC del sensor de Metano
+ float SenMetaObtenerDatoppm(void);
+/** @} */ // end of sensor de Metatano group
 /** @} */ // end of periferico group
 
-#endif /* IOT_SDK_PERIPHERALS_SENSOR1_H_ */
+#endif /* IOT_SDK_PERIPHERALS_SENSORMETA_H_ */

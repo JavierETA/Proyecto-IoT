@@ -7,15 +7,14 @@
  *
 */
 /* ------- INCLUDES -------- */
-#define "alarma.h"
-#define "fls_gpio.h"
+#include "alarma.h"
+#include "fsl_gpio.h"
 
 /* ------- DEFINITIONS ------*/
 
 
 /* ------- PRIVATE PROTOTYPES ----------- */
-void activarAlarma(void);
-void apagarAlarma(void);
+
 
 /* ------- EXTERNAL VARIABLES ----------- */
 
@@ -34,13 +33,4 @@ void activarAlarma(void){
 
 void apagarAlarma(void){
 	GPIO_PinWrite(GPIOD, 6, 0);
-}
-
-void controlAlarma(char control){
-
-	if (control == "activar") {
-		activarAlarma();
-	}else if (control == "desactivar"){
-		apagarAlarma();
-	}
 }

@@ -10,8 +10,9 @@
  * @file    K32L2B31A_Project.c
  * @brief   Application entry point.
  */
-#include <sensor1.h>
-#include <sensor2.h>
+#include <sensorHume.h>
+#include <sensorMeta.h>
+#include <sensorTemp.h>
 #include <stdio.h>
 #include "board.h"
 #include "peripherals.h"

@@ -1,15 +1,15 @@
-/*! @file : sensor_temp.c
+/*! @file : sensorHume.c
  * @author  JAVIER ELIAS TOBON AYUBB
  * @version 1.0.0
  * @date    10/09/2021
- * @brief   Driver para sensor de temperatura
+ * @brief   Driver para sensor de Humedad
  * @details
  *
 */
 /*******************************************************************************
  * Includes
  ******************************************************************************/
-#include <sensor2.h>
+#include <sensorHume.h>
 #include "peripherals.h"
 
 /*******************************************************************************
@@ -20,11 +20,11 @@
 /*******************************************************************************
  * Private Prototypes
  ******************************************************************************/
-//Inicia captura por ADC de voltaje generado por sensor de temperatura
- void SenTempIniciarCap2(void);
+//Inicia captura por ADC de voltaje generado por sensor de Humedad
+void SenHumeIniciarCap(void);
 //-----------------------------------------------------------------------------
 //Espera que el ADC obtenga el resultado
- void SenTempEsperarResult2(void);
+void SenHumeEsperarResult(void);
 
 
 /*******************************************************************************
@@ -40,28 +40,26 @@
 /*******************************************************************************
  * Private Source Code
  ******************************************************************************/
- void SenTempIniciarCap2(void){
-      ADC16_SetChannelConfig(SenTemp_ADC16_BASE2, SenTemp_ADC16_CHANNEL_GROUP2, & ADC0_channelsConfig[0]);
+void SenHumeIniciarCap(void){
+	ADC16_SetChannelConfig(SenHume_ADC16_BASE, SenHume_ADC16_CHANNEL_GROUP, & ADC0_channelsConfig[1]);
+}
 
-  }
-
-  void SenTempEsperarResult2(void){
-  	while (0U == (kADC16_ChannelConversionDoneFlag & ADC16_GetChannelStatusFlags(SenTemp_ADC16_BASE2, SenTemp_ADC16_CHANNEL_GROUP2))){
+void SenHumeEsperarResult(void){
+	while (0U == (kADC16_ChannelConversionDoneFlag & ADC16_GetChannelStatusFlags(SenHume_ADC16_BASE, SenHume_ADC16_CHANNEL_GROUP))){
   	}
-  }
+}
 
 
 /*******************************************************************************
  * Public Source Code
  ******************************************************************************/
 
-  float SenTempObtenerDatoCenti2(void){
-  	SenTempIniciarCap2();
-  	SenTempEsperarResult2();
-  	uint32_t resultadoADC;
-  	float voltajeADC;
-  	resultadoADC = ADC16_GetChannelConversionValue(SenTemp_ADC16_BASE2, SenTemp_ADC16_CHANNEL_GROUP2);
-  	voltajeADC = (3.3*resultadoADC)/4095;
-
-   	return(voltajeADC);
-  }
+float SenHumeObtenerDatoRH(void){
+	SenHumeIniciarCap();
+	SenHumeEsperarResult();
+	uint32_t resultadoADC;
+	float voltajeADC;
+	resultadoADC = ADC16_GetChannelConversionValue(SenHume_ADC16_BASE, SenHume_ADC16_CHANNEL_GROUP);
+	voltajeADC = (3.3*resultadoADC)/4095;
+	return(voltajeADC);
+}

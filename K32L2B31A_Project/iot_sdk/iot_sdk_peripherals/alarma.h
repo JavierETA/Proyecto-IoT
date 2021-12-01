@@ -27,7 +27,6 @@
 /* --------- Public Prototypes --------- */
 void activarAlarma(void);
 void apagarAlarma(void);
-void controlAlarma(char);
 
 
 /** @} */ // end of X group
