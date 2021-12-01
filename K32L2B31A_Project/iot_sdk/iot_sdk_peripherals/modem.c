@@ -191,7 +191,7 @@ void Modem_Task_Run(void){
 		Modem_Rta_Cmd(TIME_WAIT_RTA_CMD,">",ST_MOD_PUBLIC_DAT,ST_MOD_OPEN_MQTT);
 	break;
 	case ST_MOD_PUBLIC_DAT:
-		printf("%f,%f,%f, \r\n",SenTempObtenerDatoCenti(),SenHumeObtenerDatoRH(),SenMetaObtenerDatoppm());
+		printf("%f,%f,%f \r\n",SenTempObtenerDatoCenti(),SenHumeObtenerDatoRH(),SenMetaObtenerDatoppm());
 		putchar(CNTL_Z);
 		Modem_Rta_Cmd(TIME_WAIT_RTA_CMD,"OK",ST_MOD_KEEP_ALIVE,ST_MOD_CONN_PUB);
 	break;
