@@ -13,7 +13,7 @@ wificont = 0
 #FIN CREDENCIALES WIFI
 
 #CREDENCIALES SERVIDOR MQTT
-mqtt_server = '10.11.60.14'
+mqtt_server = 'broker.emqx.io'
 client_id = b'cliente_esp32_Proyecto_IoT'
 topic_pub = b'topic/mediciones'
 topic_sub = b'topic/mensaje'
@@ -53,9 +53,9 @@ def sub_cb(topic, msg):
     """ Activar/Desactivar alarma """
     global ALARMA
     
-    if msg == 'activar_alarma':
+    if msg == b'activar_alarma':
         ALARMA.on()
-    elif msg == 'desactivar_alarma':
+    elif msg == b'desactivar_alarma':
         ALARMA.off() 
 
 def connect_and_subscribe():
@@ -97,6 +97,12 @@ def TxMQTT(mens):
 
 def main():
     do_connect(SSID, PASSWORD)
+    global client, sta_if
+    if sta_if.isconnected():
+        client = connect_and_subscribe()
+    
+    while True:
+        TxMQTT('Mensaje de prueba')
 
 #llamado funcion principal
 if __name__ == '__main__':
