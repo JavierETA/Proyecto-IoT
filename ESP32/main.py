@@ -81,6 +81,20 @@ def restart_and_reconnect():
     if sta_if.isconnected():
         client = connect_and_subscribe()
 
+def TxMQTT(mens):
+    # Funcion para publicar
+    try:
+        """ comprueba si hay mensaje pendiente, si no return none,
+            de lo contrario espera el mensaje
+        """
+        new_message = client.check_msg()         
+        if new_message != "None":                   # verifica que no exista mensaje pendiente en el servidor.           
+            client.publish(topic_pub, mens)         # publica dato en topic/mediciones
+        
+        time.sleep(1)
+    except OSError as e:                            # en caso de error reintento conexion al servidor
+        restart_and_reconnect()
+
 def main():
     do_connect(SSID, PASSWORD)
 
