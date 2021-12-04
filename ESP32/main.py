@@ -53,9 +53,9 @@ def sub_cb(topic, msg):
     """ Activar/Desactivar alarma """
     global ALARMA
     
-    if msg == 'activar_alarma':
+    if msg == b'activar_alarma':
         ALARMA.on()
-    elif msg == 'desactivar_alarma':
+    elif msg == b'desactivar_alarma':
         ALARMA.off() 
 
 def connect_and_subscribe():
