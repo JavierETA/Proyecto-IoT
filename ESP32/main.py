@@ -97,7 +97,12 @@ def TxMQTT(mens):
 
 def main():
     do_connect(SSID, PASSWORD)
+    global client, sta_if
+    if sta_if.isconnected():
+        client = connect_and_subscribe()
     
+    while True:
+        TxMQTT('Mensaje de prueba')
 
 #llamado funcion principal
 if __name__ == '__main__':
