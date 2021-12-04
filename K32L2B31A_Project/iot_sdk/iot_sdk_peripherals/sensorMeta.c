@@ -41,7 +41,7 @@
  * Private Source Code
  ******************************************************************************/
 void SenMetaIniciarCap(void){
-	ADC16_SetChannelConfig(SenMeta_ADC16_BASE, SenMeta_ADC16_CHANNEL_GROUP, & ADC0_channelsConfig[0]);
+	ADC16_SetChannelConfig(SenMeta_ADC16_BASE, SenMeta_ADC16_CHANNEL_GROUP, &ADC0_channelsConfig[0]);
 }
 
 void SenMetaEsperarResult(void){

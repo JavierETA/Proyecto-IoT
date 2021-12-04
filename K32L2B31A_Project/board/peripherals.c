@@ -115,21 +115,21 @@ instance:
       - 0:
         - channelName: ''
         - enableDifferentialConversion: 'false'
-        - channelNumber: 'SE.9'
+        - channelNumber: 'SE.8'
         - enableInterruptOnConversionCompleted: 'false'
         - channelGroup: '0'
         - initializeChannel: 'true'
       - 1:
         - channelName: ''
         - enableDifferentialConversion: 'false'
-        - channelNumber: 'SE.12'
+        - channelNumber: 'SE.9'
         - enableInterruptOnConversionCompleted: 'false'
         - channelGroup: '0'
         - initializeChannel: 'false'
       - 2:
         - channelName: ''
         - enableDifferentialConversion: 'false'
-        - channelNumber: 'SE.13'
+        - channelNumber: 'SE.0'
         - enableInterruptOnConversionCompleted: 'false'
         - channelGroup: '0'
         - initializeChannel: 'false'
@@ -137,17 +137,17 @@ instance:
 /* clang-format on */
 adc16_channel_config_t ADC0_channelsConfig[3] = {
   {
+    .channelNumber = 8U,
+    .enableDifferentialConversion = false,
+    .enableInterruptOnConversionCompleted = false,
+  },
+  {
     .channelNumber = 9U,
     .enableDifferentialConversion = false,
     .enableInterruptOnConversionCompleted = false,
   },
   {
-    .channelNumber = 12U,
-    .enableDifferentialConversion = false,
-    .enableInterruptOnConversionCompleted = false,
-  },
-  {
-    .channelNumber = 13U,
+    .channelNumber = 0U,
     .enableDifferentialConversion = false,
     .enableInterruptOnConversionCompleted = false,
   }

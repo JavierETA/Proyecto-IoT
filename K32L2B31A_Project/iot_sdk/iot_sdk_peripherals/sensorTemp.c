@@ -39,7 +39,7 @@ void SenTempEsperarResult(void);
  * Private Source Code
  ******************************************************************************/
 void SenTempIniciarCap(void){
-	ADC16_SetChannelConfig(SenTemp_ADC16_BASE, SenTemp_ADC16_CHANNEL_GROUP, & ADC0_channelsConfig[2]);
+	ADC16_SetChannelConfig(SenTemp_ADC16_BASE, SenTemp_ADC16_CHANNEL_GROUP, &ADC0_channelsConfig[2]);
 }
 
 void SenTempEsperarResult(void){

@@ -41,7 +41,7 @@ void SenHumeEsperarResult(void);
  * Private Source Code
  ******************************************************************************/
 void SenHumeIniciarCap(void){
-	ADC16_SetChannelConfig(SenHume_ADC16_BASE, SenHume_ADC16_CHANNEL_GROUP, & ADC0_channelsConfig[1]);
+	ADC16_SetChannelConfig(SenHume_ADC16_BASE, SenHume_ADC16_CHANNEL_GROUP, &ADC0_channelsConfig[1]);
 }
 
 void SenHumeEsperarResult(void){

@@ -29,11 +29,11 @@ extern "C" {
 #define ADC0_IRQN ADC0_IRQn
 /* ADC0 interrupt handler identifier. */
 #define ADC0_IRQHANDLER ADC0_IRQHandler
-/* Channel 0 (SE.9) conversion control group. */
+/* Channel 0 (SE.8) conversion control group. */
 #define ADC0_CH0_CONTROL_GROUP 0
-/* Channel 1 (SE.12) conversion control group. */
+/* Channel 1 (SE.9) conversion control group. */
 #define ADC0_CH1_CONTROL_GROUP 0
-/* Channel 2 (SE.13) conversion control group. */
+/* Channel 2 (SE.0) conversion control group. */
 #define ADC0_CH2_CONTROL_GROUP 0
 /* BOARD_InitPeripherals defines for LPTMR0 */
 /* Definition of peripheral ID */

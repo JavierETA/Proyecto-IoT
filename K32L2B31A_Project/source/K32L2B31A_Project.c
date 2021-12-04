@@ -25,7 +25,9 @@
 #include "irq_lptmr0.h"
 #include "irq_lpuart0.h"
 #include "modem.h"
-
+#include "sensorHume.h"
+#include "sensorMeta.h"
+#include "sensorTemp.h"
 
 /* TODO: insert other definitions and declarations here. */
 
@@ -83,8 +85,14 @@ int main(void) {
     Timer_Init();
     Modem_Init();
     Alarma_Init();
+    int var;
     while(1) {
-    	Modem_Task_Run();
+//    	Modem_Task_Run();
+    	printf("%.2f --- %.2f ---- %.2f\r\n",
+    			SenHumeObtenerDatoRH(), SenTempObtenerDatoCenti(), SenMetaObtenerDatoppm());
+    	for (var = 0; var < 0xFFFFFF; ++var) {
+
+		}
     }
     return 0 ;
 }
