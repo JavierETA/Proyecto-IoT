@@ -113,21 +113,21 @@ instance:
       - enable_custom_name: 'false'
     - adc16_channels_config:
       - 0:
-        - channelName: ''
+        - channelName: 'metano'
         - enableDifferentialConversion: 'false'
         - channelNumber: 'SE.8'
         - enableInterruptOnConversionCompleted: 'false'
         - channelGroup: '0'
         - initializeChannel: 'true'
       - 1:
-        - channelName: ''
+        - channelName: 'humedad'
         - enableDifferentialConversion: 'false'
         - channelNumber: 'SE.9'
         - enableInterruptOnConversionCompleted: 'false'
         - channelGroup: '0'
         - initializeChannel: 'false'
       - 2:
-        - channelName: ''
+        - channelName: 'temperatura'
         - enableDifferentialConversion: 'false'
         - channelNumber: 'SE.0'
         - enableInterruptOnConversionCompleted: 'false'

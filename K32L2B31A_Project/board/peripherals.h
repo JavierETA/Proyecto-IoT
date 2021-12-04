@@ -25,6 +25,12 @@ extern "C" {
 /* Definitions for BOARD_InitPeripherals functional group */
 /* Alias for ADC0 peripheral */
 #define ADC0_PERIPHERAL ADC0
+/* Definition of custom name for ADC0 configuration #0 (channel 8, control group 0) */
+#define ADC0_METANO 0U
+/* Definition of custom name for ADC0 configuration #1 (channel 9, control group 0) */
+#define ADC0_HUMEDAD 1U
+/* Definition of custom name for ADC0 configuration #2 (channel 0, control group 0) */
+#define ADC0_TEMPERATURA 2U
 /* ADC0 interrupt vector ID (number). */
 #define ADC0_IRQN ADC0_IRQn
 /* ADC0 interrupt handler identifier. */
