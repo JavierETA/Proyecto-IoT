@@ -63,5 +63,6 @@ void SenMetaEsperarResult(void){
   	voltajeADC = (3.3*resultadoADC)/4095;
   	voltajeAux = 0.66*voltajeADC;
   	Metappm = (voltajeAux + 0.0148148)/(0.002074074);
+  	Metappm=(float)(resultadoADC);
    	return(Metappm);
   }

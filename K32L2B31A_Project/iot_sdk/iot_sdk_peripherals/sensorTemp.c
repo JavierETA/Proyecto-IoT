@@ -59,5 +59,6 @@ float SenTempObtenerDatoCenti(void){
 	resultadoADC = ADC16_GetChannelConversionValue(SenTemp_ADC16_BASE, SenTemp_ADC16_CHANNEL_GROUP);
 	voltajeADC = (3.3*resultadoADC)/4095;
 	TempC = -66.875+(72.917*voltajeADC);
+	TempC=(float)(resultadoADC);
 	return(TempC);
 }
