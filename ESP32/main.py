@@ -1,5 +1,8 @@
 import time
 import network
+import machine
+from machine import Pin
+from umqttsimple import MQTTClient
 
 #CONSTANTES
 
@@ -9,8 +12,16 @@ PASSWORD = "e0c60effb0f8"
 wificont = 0
 #FIN CREDENCIALES WIFI
 
+#CREDENCIALES SERVIDOR MQTT
+mqtt_server = '10.11.60.14'
+client_id = b'cliente_esp32_Proyecto_IoT'
+topic_pub = b'topic/mediciones'
+topic_sub = b'topic/mensaje'
+#FIN CREDENCIALES MQTT
 
+ALARMA = Pin(16, Pin.OUT, value=0)
 
+# -----------------------------------
 #funcion de conexion wifi
 def do_connect(SSID, PASSWORD):
     global sta_if, wificont
@@ -35,6 +46,40 @@ def do_connect(SSID, PASSWORD):
             return
         while not sta_if.isconnected():           # ...si no se ha establecido la conexión...
             pass                                  # ...repite el bucle...
+
+# ----------------------------------
+# Funciones para MQTT
+def sub_cb(topic, msg):
+    """ Activar/Desactivar alarma """
+    global ALARMA
+    
+    if msg == 'activar_alarma':
+        ALARMA.on()
+    elif msg == 'desactivar_alarma':
+        ALARMA.off() 
+
+def connect_and_subscribe():
+    global client_id, mqtt_server, topic_sub    
+    client = MQTTClient(client_id, mqtt_server)     # Crea un Cliente Mqtt
+    client.set_callback(sub_cb)                     # se configura la funcion que realiza la accion del callback
+    try:
+        client.connect()                            # Conexion servidor Mqtt.
+        client.subscribe(topic_sub)                 # Sub al topic/mensaje.
+        print("Connected to %s MQTT broker, subscribed to %s topic" % (mqtt_server, topic_sub))
+        return client
+    except OSError as e:
+        do_connect(SSID, PASSWORD)                  # Caso de error internar nuevamente conexion wifi.
+    
+def restart_and_reconnect():
+    """
+    En caso de error en la publicacion de datos, se descarta error conexion red,
+    y se intenta conectar al servidor nuevamente. 
+    """
+    time.sleep(2)
+    do_connect(SSID, PASSWORD)
+    global client, sta_if
+    if sta_if.isconnected():
+        client = connect_and_subscribe()
 
 def main():
     do_connect(SSID, PASSWORD)
