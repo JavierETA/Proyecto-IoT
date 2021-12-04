@@ -13,7 +13,7 @@ wificont = 0
 #FIN CREDENCIALES WIFI
 
 #CREDENCIALES SERVIDOR MQTT
-mqtt_server = '10.11.60.14'
+mqtt_server = 'broker.emqx.io'
 client_id = b'cliente_esp32_Proyecto_IoT'
 topic_pub = b'topic/mediciones'
 topic_sub = b'topic/mensaje'
@@ -97,6 +97,7 @@ def TxMQTT(mens):
 
 def main():
     do_connect(SSID, PASSWORD)
+    
 
 #llamado funcion principal
 if __name__ == '__main__':
