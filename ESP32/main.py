@@ -23,6 +23,7 @@ topic_sub = b"topic/mensaje"
 ALARMA = Pin(16, Pin.OUT, value=0)
 adcTemp = ADC(Pin(34))
 adcHume = ADC(Pin(35))
+adcMeta = ADC(Pin(32))
 
 # CONFIGURACION DE LOS ADCs
 """
@@ -31,7 +32,7 @@ logrando lecturas hasta 3.6V
 """
 adcTemp.atten(ADC.ATTN_11DB)
 adcHume.atten(ADC.ATTN_11DB)
-
+adcMeta.atten(ADC.ATTN_11DB)
 
 # -----------------------------------
 # funcion de conexion wifi
@@ -65,7 +66,7 @@ def conectar(SSID, PASSWORD):
 
 
 # ----------------------------------
-# Funciones para MQTT
+# FUNCIONES PARA MQTT
 def sub_cb(topic, msg):
     """Activar/Desactivar alarma"""
     global ALARMA
@@ -121,7 +122,7 @@ def TxMQTT(mens):
     except OSError as e:  # en caso de error reintento conexion al servidor
         reconexion()
 
-
+# -----------------------------------------
 # LECTURA SENSOR DE TEMPERATURA Y HUMEDAD
 def Lectura_TempHume():
     """
@@ -142,7 +143,22 @@ def Lectura_TempHume():
     Humedad = round(-12.5 + (41.667 * volt), 2)
     return (Temperatura, Humedad)
 
+# LECTURA DE SENSOR DE METANO 
+def Lectura_Meta():
+    """
+    Se toman la lectura del adc para Metano,
+    se aplica formula de conversion a voltaje y
+    se aplica la resolucion del sensor de voltaje vs metano
+    en unidades de ppm
+    """
+    adc = adcMeta.read()
+    volt = adc * 3.6 / 4095
+    volt_temporal = 1.5015 * volt
+    Metano = round((volt_temporal + 0.0148148) / 0.002074074, 2)
+    return (Metano)
 
+
+# --------------------------------------
 # FUNCION PRINCIPAL
 def main():
     conectar(SSID, PASSWORD)
