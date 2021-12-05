@@ -141,9 +141,9 @@ def Lectura_TempHume():
     adc = adcHume.read()
     volt = adc * 3.6 / 4095
     Humedad = round(-12.5 + (41.667 * volt), 2)
-    return (Temperatura, Humedad)
+    return [Temperatura, Humedad]
 
-# LECTURA DE SENSOR DE METANO 
+# LECTURA DE SENSOR DE METANO
 def Lectura_Meta():
     """
     Se toman la lectura del adc para Metano,
@@ -155,7 +155,7 @@ def Lectura_Meta():
     volt = adc * 3.6 / 4095
     volt_temporal = 1.5015 * volt
     Metano = round((volt_temporal + 0.0148148) / 0.002074074, 2)
-    return (Metano)
+    return Metano
 
 
 # --------------------------------------
@@ -166,7 +166,11 @@ def main():
     if sta_if.isconnected():
         client = conectarysub()
     while True:
-        TxMQTT("Mensaje de prueba")
+        datos = Lectura_TempHume()
+        datos.append(Lectura_Meta())
+        mensaje = str(datos[0])+","+str(datos[1])+","+str(datos[2])
+        TxMQTT(mensaje)
+        time.sleep(1)
 
 
 # llamado funcion principal
