@@ -7,13 +7,13 @@ from umqttsimple import MQTTClient
 # CONSTANTES
 
 # CREDENCIALES WIFI
-SSID = "7629616296b6"
-PASSWORD = "e0c60effb0f8"
+SSID = "FiliaAristizabal"
+PASSWORD = "MANU1083023782"
 wificont = 0
 # FIN CREDENCIALES WIFI
 
 # CREDENCIALES SERVIDOR MQTT
-mqtt_server = "broker.emqx.io"
+mqtt_server = "20.120.98.227"
 client_id = b"cliente_esp32_Proyecto_IoT"
 topic_pub = b"topic/mediciones"
 topic_sub = b"topic/mensaje"
@@ -122,6 +122,7 @@ def TxMQTT(mens):
     except OSError as e:  # en caso de error reintento conexion al servidor
         reconexion()
 
+
 # -----------------------------------------
 # LECTURA SENSOR DE TEMPERATURA Y HUMEDAD
 def Lectura_TempHume():
@@ -132,7 +133,7 @@ def Lectura_TempHume():
     """
     adc = adcTemp.read()
     volt = adc * 3.6 / 4095
-    Temperatura = round(-66.875 + (72.917 * volt), 2)
+    Temperatura = -66.875 + (72.917 * volt)
     """
     Se toman la lectura del adc para humedad,
     se aplica formula de conversion a voltaje y
@@ -140,8 +141,9 @@ def Lectura_TempHume():
     """
     adc = adcHume.read()
     volt = adc * 3.6 / 4095
-    Humedad = round(-12.5 + (41.667 * volt), 2)
+    Humedad = -12.5 + (41.667 * volt)
     return [Temperatura, Humedad]
+
 
 # LECTURA DE SENSOR DE METANO
 def Lectura_Meta():
@@ -154,9 +156,35 @@ def Lectura_Meta():
     adc = adcMeta.read()
     volt = adc * 3.6 / 4095
     volt_temporal = 1.5015 * volt
-    Metano = round((volt_temporal + 0.0148148) / 0.002074074, 2)
+    Metano = (volt_temporal + 0.0148148) / 0.002074074
     return Metano
 
+
+# PROMEDIO DE DATOS DURANTE 5 SEGUNDOS
+def Prom5s():
+    """
+    Se llama la funciones encargadas de tomar las
+    lecturas de los sensores, 5 veces cada segundo
+    para realizar un promedio de estas varibles durante
+    ese tiempo.
+    """
+    Temperatura = Humedad = Metano = 0
+    for i in range(5):
+        datos = Lectura_TempHume()
+        datos.append(Lectura_Meta())
+        Temperatura = Temperatura + datos[0]
+        Humedad = Humedad + datos[1]
+        Metano = Metano + datos[2]
+        time.sleep(1)
+    Temperatura = round(Temperatura / 5, 2)
+    Humedad = round(Humedad / 5, 2)
+    Metano = round(Metano / 5 , 2)
+    """
+    Finalmente se retorna las variables sensadas
+    en formato de texto para su porterior transmision
+    """
+    mensaje = str(Temperatura) + "," + str(Humedad) + "," + str(Metano)
+    return mensaje
 
 # --------------------------------------
 # FUNCION PRINCIPAL
@@ -166,11 +194,8 @@ def main():
     if sta_if.isconnected():
         client = conectarysub()
     while True:
-        datos = Lectura_TempHume()
-        datos.append(Lectura_Meta())
-        mensaje = str(datos[0])+","+str(datos[1])+","+str(datos[2])
+        mensaje = Prom5s()
         TxMQTT(mensaje)
-        time.sleep(1)
 
 
 # llamado funcion principal
