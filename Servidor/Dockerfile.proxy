@@ -4,8 +4,8 @@ WORKDIR /app
 
 ENV TZ=America/Bogota
 
-RUN pip install pika paho-mqtt
-RUN pip install influxdb influxdb-client
+COPY requirements.txt requirements.txt
+RUN pip install -r requirements.txt
 
 COPY . /app
 
