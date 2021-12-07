@@ -1,10 +1,15 @@
 
+from numpy import datetime64
+import pandas as pd
 import pika, os
 from influxdb_client import InfluxDBClient, Point
 from influxdb_client.client.write_api import SYNCHRONOUS
 from datetime import datetime, timedelta
 import datetime 
+from pandas.core.frame import DataFrame
 
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_squared_error
 
 my_bucket = os.environ.get("DOCKER_INFLUXDB_INIT_BUCKET")
 db_token = os.environ.get("DOCKER_INFLUXDB_INIT_ADMIN_TOKEN")
@@ -53,6 +58,30 @@ def query_data():
     data_frame.interpolate(method='ffill', limit_direction='forward')
     data_frame.fillna(method='bfill')
     data_frame.fillna(method='pad')
+
+    # Resumen de los datos
+    #data_max = data_frame.loc[:, 'HUMIDITY':'TEMPERATURA'].max()
+    #data_min = data_frame.loc[:, 'HUMIDITY':'TEMPERATURA'].min()
+    #data_mean = data_frame.loc[:, 'HUMIDITY':'TEMPERATURA'].mean()
+    #data_median = data_frame.loc[:, 'HUMIDITY':'TEMPERATURA'].median()
+    #data_std = data_frame.loc[:, 'HUMIDITY':'TEMPERATURA'].std()
+
+    #data_resume = DataFrame([data_max, data_min, data_mean, data_median, data_std],
+    #                        index=['maximo', 'minimo', 'media', 'mediana', 'standard desv'])
+    #print(data_resume)
+    #print('---'*20)
+
+    data_train = data_frame.loc[:data_frame.shape[0]-1, ['HUMIDITY','TEMPERATURA']]
+    label_train =  data_frame.loc[:data_frame.shape[0]-1, 'METHANE']
+
+    reg_RFR = RandomForestRegressor(n_estimators=10, max_depth=10).fit(data_train, label_train)
+    value_predict = DataFrame(data_frame[['HUMIDITY','TEMPERATURA']].values[-1], index=['HUMIDITY', 'TEMPERATURA'])
+    predict_metano_RFR = reg_RFR.predict(value_predict.transpose())
+    print('RL metano predecido: ', predict_metano_RFR)
+    mse = mean_squared_error(data_frame[['METHANE']].values[-1], predict_metano_RFR)
+    print('MSE_RFR: ', mse)
+    print('---'*20)
+
 
 def process_function(msg):
     message = msg.decode("utf-8")
