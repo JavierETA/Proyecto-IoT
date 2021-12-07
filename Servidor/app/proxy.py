@@ -44,7 +44,15 @@ def query_data():
                                           '|> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value") '
                                           '|> keep(columns: ["TEMPERATURA", "HUMIDITY", "METHANE", "FECHA"])')
     
-    
+    # Crea un nuevo data frame
+    data_frame = DataFrame(raw_data.loc[:,'FECHA':'TEMPERATURA'])
+    data_frame['FECHA'] = data_frame['FECHA'].astype(datetime64)
+
+    # Veracidad de los datos 
+    data_frame.dropna(subset=["FECHA", "TEMPERATURA", "HUMIDITY", "METHANE"], inplace=True)
+    data_frame.interpolate(method='ffill', limit_direction='forward')
+    data_frame.fillna(method='bfill')
+    data_frame.fillna(method='pad')
 
 def process_function(msg):
     message = msg.decode("utf-8")
