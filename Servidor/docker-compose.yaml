@@ -24,23 +24,6 @@ services:
     restart: always
     ports:
       - "3000:3000"
-  api:
-    container_name: apiiot
-    image: apiiot
-    restart: always
-    build:
-      context: .
-      dockerfile: Dockerfile.api
-    env_file:
-      - ./credentials.env
-    volumes:
-      - ./app:/app
-    ports:
-      - "80:80"
-    networks:
-      default:
-        aliases:
-          - api
   proxy:
     container_name: proxyiot
     image: proxyiot
