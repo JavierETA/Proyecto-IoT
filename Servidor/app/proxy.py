@@ -10,6 +10,7 @@ from pandas.core.frame import DataFrame
 
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error
+from alarma import mandarAlarma
 
 my_bucket = os.environ.get("DOCKER_INFLUXDB_INIT_BUCKET")
 db_token = os.environ.get("DOCKER_INFLUXDB_INIT_ADMIN_TOKEN")
@@ -79,13 +80,22 @@ def query_data():
     predict_metano_RFR = reg_RFR.predict(value_predict.transpose())
     print('RL metano predecido: ', predict_metano_RFR)
     mse = mean_squared_error(data_frame[['METHANE']].values[-1], predict_metano_RFR)
-    print('MSE_RFR: ', mse)
-    print('---'*20)
+    #print('MSE_RFR: ', mse)
+    #print('---'*20)
 
+    if (mse > 1) and (data_frame[['METHANE']].values[-1] > predict_metano_RFR):
+        mandarAlarma(1)
+    else:
+        mandarAlarma(0)
 
 def process_function(msg):
     message = msg.decode("utf-8")
+    
+    if message == 'activar_alarma' or message == 'desactivar_alarma':
+        return
+    
     update_data(message)
+    query_data()
 
     return
 
