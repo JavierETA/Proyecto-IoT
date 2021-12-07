@@ -46,7 +46,7 @@ def update_data(msg):
 def query_data():
     # extre los datos de los datos de la base de datos
     raw_data = query_api.query_data_frame('from(bucket:"test_bucket") '
-                                          '|> range(start: -60m) '
+                                          '|> range(start: -2h) '
                                           '|> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value") '
                                           '|> keep(columns: ["TEMPERATURA", "HUMIDITY", "METHANE", "FECHA"])')
     
@@ -72,13 +72,14 @@ def query_data():
     #print(data_resume)
     #print('---'*20)
 
+    # Seleccion de caracteristicas para entrenar el modelo
     data_train = data_frame.loc[:data_frame.shape[0]-1, ['HUMIDITY','TEMPERATURA']]
     label_train =  data_frame.loc[:data_frame.shape[0]-1, 'METHANE']
 
     reg_RFR = RandomForestRegressor(n_estimators=10, max_depth=10).fit(data_train, label_train)
     value_predict = DataFrame(data_frame[['HUMIDITY','TEMPERATURA']].values[-1], index=['HUMIDITY', 'TEMPERATURA'])
     predict_metano_RFR = reg_RFR.predict(value_predict.transpose())
-    print('RL metano predecido: ', predict_metano_RFR)
+    #print('RL metano predecido: ', predict_metano_RFR)
     mse = mean_squared_error(data_frame[['METHANE']].values[-1], predict_metano_RFR)
     #print('MSE_RFR: ', mse)
     #print('---'*20)
