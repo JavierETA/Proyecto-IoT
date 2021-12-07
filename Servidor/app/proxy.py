@@ -1,8 +1,10 @@
 
 import pika, os
-from influxdb_client import InfluxDBClient, Point, WritePrecision
+from influxdb_client import InfluxDBClient, Point
 from influxdb_client.client.write_api import SYNCHRONOUS
 from datetime import datetime, timedelta
+import datetime 
+
 
 my_bucket = os.environ.get("DOCKER_INFLUXDB_INIT_BUCKET")
 db_token = os.environ.get("DOCKER_INFLUXDB_INIT_ADMIN_TOKEN")
@@ -18,17 +20,31 @@ query_api = client.query_api()
 def update_data(msg):
     message = msg
     string_list = message.split(",")
-    #time  = datetime.datetime.now()
-    #time_local = time - timedelta(hours=5)
+    time  = datetime.datetime.now()
+    time_local = time - timedelta(hours=5)
+    time_local = time_local.strftime('%d.%m.%Y %H:%M:%S')
 
     temperatura = float(string_list[0])
     humidity = float(string_list[1])
     methane = float(string_list[2])
 
-    point = Point("DATOS").field("TEMPERATURA", temperatura).field("HUMIDITY", humidity).field("METHANE", methane)
+    point = Point("DATOS")\
+            .field("FECHA", time_local)\
+            .field("TEMPERATURA", temperatura)\
+            .field("HUMIDITY", humidity)\
+            .field("METHANE", methane)
     write_api.write(my_bucket, my_org, point)
     
     return
+
+def query_data():
+    # extre los datos de los datos de la base de datos
+    raw_data = query_api.query_data_frame('from(bucket:"test_bucket") '
+                                          '|> range(start: -60m) '
+                                          '|> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value") '
+                                          '|> keep(columns: ["TEMPERATURA", "HUMIDITY", "METHANE", "FECHA"])')
+    
+    
 
 def process_function(msg):
     message = msg.decode("utf-8")
