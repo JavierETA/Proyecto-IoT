@@ -16,7 +16,7 @@ def mandarAlarma(accion):
     accion: 1 -> activa la alarma.
             0 -> desactiva la alarma.
     """
-    mqtthost = "40.112.57.12"
+    mqtthost = "20.97.208.123"
     mqttuser = "guest"
     mqttpass = "guest"
     client = paho.Client()
