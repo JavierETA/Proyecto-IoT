@@ -45,7 +45,7 @@ def update_data(msg):
 
 def query_data():
     # extre los datos de los datos de la base de datos
-    raw_data = query_api.query_data_frame('from(bucket:"test_bucket") '
+    raw_data = query_api.query_data_frame('from(bucket:"Lecturas_sensores") '
                                           '|> range(start: -7d) '
                                           '|> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value") '
                                           '|> keep(columns: ["TEMPERATURA", "HUMIDITY", "METHANE", "FECHA"])')
