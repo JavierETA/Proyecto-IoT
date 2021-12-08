@@ -1,19 +1,18 @@
 import time
 import network
-import machine
 from machine import Pin, ADC
 from umqttsimple import MQTTClient
 
 # CONSTANTES
 
 # CREDENCIALES WIFI
-SSID = "FiliaAristizabal"
-PASSWORD = "MANU1083023782"
+SSID = "7629616296b6"
+PASSWORD = "e0c60effb0f8"
 wificont = 0
 # FIN CREDENCIALES WIFI
 
 # CREDENCIALES SERVIDOR MQTT
-mqtt_server = "20.120.98.227"
+mqtt_server = "20.97.208.123"
 client_id = b"cliente_esp32_Proyecto_IoT"
 topic_pub = b"topic/mediciones"
 topic_sub = b"topic/mensaje"
@@ -87,7 +86,7 @@ def conectarysub():
         client.connect()  # Conexion servidor Mqtt.
         client.subscribe(topic_sub)  # Sub al topic/mensaje.
         print(
-            "Connected to %s MQTT broker, subscribed to %s topic"
+            "Conectado a %s broker MQTT, suscrito a topico %s"
             % (mqtt_server, topic_sub)
         )
         return client
