@@ -13,7 +13,8 @@ def on_message(client, userdata, msg):
 
 def mandarAlarma(accion):
     """
-    accion: 1 -> activa la alarma.
+    accion: 1 -> activa la alarma de fuego.
+            2 -> activa la alarma de intoxicacion.
             0 -> desactiva la alarma.
     """
     mqtthost = "20.97.208.123"
@@ -26,6 +27,8 @@ def mandarAlarma(accion):
     client.username_pw_set(mqttuser, mqttpass)
     client.connect(mqtthost, 1883, 60)
     if accion == 1:
-        client.publish('topic/mensaje', 'activar_alarma', 0, False)
+        client.publish('topic/mensaje', 'alarma_fuego', 0, False)
+    elif accion == 2:
+        client.publish('topic/mensaje', 'alarma_intoxi', 0, False)
     elif accion == 0:
         client.publish('topic/mensaje', 'desactivar_alarma', 0, False)

@@ -76,7 +76,7 @@ def query_data():
     data_train = data_frame.loc[:data_frame.shape[0]-1, ['HUMIDITY','TEMPERATURA']]
     label_train =  data_frame.loc[:data_frame.shape[0]-1, 'METHANE']
 
-    reg_RFR = RandomForestRegressor(n_estimators=10, max_depth=10).fit(data_train, label_train)
+    reg_RFR = RandomForestRegressor(n_estimators=30, max_depth=20).fit(data_train, label_train)
     value_predict = DataFrame(data_frame[['HUMIDITY','TEMPERATURA']].values[-1], index=['HUMIDITY', 'TEMPERATURA'])
     predict_metano_RFR = reg_RFR.predict(value_predict.transpose())
     #print('RL metano predecido: ', predict_metano_RFR)
@@ -84,8 +84,13 @@ def query_data():
     #print('MSE_RFR: ', mse)
     #print('---'*20)
 
-    if (mse > 1) and (data_frame[['METHANE']].values[-1] > predict_metano_RFR):
+    ultimo = data_frame[['METHANE']].values[-1]
+    penultimo = data_frame[['METHANE']].values[-2]
+    
+    if (predict_metano_RFR >= 1000) and (ultimo > penultimo):   # intoxicacion 
         mandarAlarma(1)
+    elif (predict_metano_RFR >= 1500) and (ultimo > penultimo): # incendio
+        mandarAlarma(2)
     else:
         mandarAlarma(0)
 
