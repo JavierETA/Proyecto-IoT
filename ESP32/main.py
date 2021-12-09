@@ -1,6 +1,6 @@
 import time
 import network
-from machine import Pin, ADC
+from machine import Pin, ADC, Timer
 from umqttsimple import MQTTClient
 
 # CONSTANTES
@@ -65,15 +65,29 @@ def conectar(SSID, PASSWORD):
 
 
 # ----------------------------------
+# FUNCIONES PARA CONTROL DE LA ALARMA
+def alarma_estado(op):
+    if op == 1:
+        ALARMA.value(not ALARMA.value())
+    else:
+        ALARMA.off()
+
+def led_blink_timed(period, est):
+    timer.init(period=period, mode=Timer.PERIODIC, callback=lambda t: alarma_estado(est))
+
+timer = Timer(1)
+
+# ----------------------------------
 # FUNCIONES PARA MQTT
 def sub_cb(topic, msg):
     """Activar/Desactivar alarma"""
     global ALARMA
-
-    if msg == b"activar_alarma":
-        ALARMA.on()
+    if msg == b"alarma_fuego":
+        led_blink_timed(500,1)
+    elif msg == b'alarma_intoxi':
+        led_blink_timed(10,1)
     elif msg == b"desactivar_alarma":
-        ALARMA.off()
+        led_blink_timed(500,0)
 
 
 def conectarysub():
