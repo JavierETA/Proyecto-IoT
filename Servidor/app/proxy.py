@@ -97,7 +97,7 @@ def query_data():
 def process_function(msg):
     message = msg.decode("utf-8")
     
-    if message == 'activar_alarma' or message == 'desactivar_alarma':
+    if message == 'alarma_intoxi' or message == 'alarma_fuego' or message == 'desactivar_alarma':
         return
     
     update_data(message)
