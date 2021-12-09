@@ -87,9 +87,13 @@ def query_data():
     ultimo = data_frame[['METHANE']].values[-1]
     penultimo = data_frame[['METHANE']].values[-2]
     
-    if (predict_metano_RFR >= 1000) and (ultimo > penultimo):   # intoxicacion 
+    if (ultimo >= 1500): # incendio
         mandarAlarma(1)
-    elif (predict_metano_RFR >= 1500) and (ultimo > penultimo): # incendio
+    elif (ultimo >= 1000) and (ultimo < 1500): # intoxicacion
+        mandarAlarma(2)
+    if (predict_metano_RFR >= 1500) and (ultimo > penultimo):   # prediccion incendio 
+        mandarAlarma(1)
+    elif (predict_metano_RFR >= 1000) and (ultimo > penultimo): # prediccion intoxicacion
         mandarAlarma(2)
     else:
         mandarAlarma(0)
