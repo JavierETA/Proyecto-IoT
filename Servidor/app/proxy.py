@@ -89,14 +89,43 @@ def query_data():
     
     if (ultimo >= 1500): # incendio
         mandarAlarma(1)
+
+        point = Point("alarmas").field("alarma", 'Alarma Incendio')
+        write_api.write('Alarma', my_org, point)
+        print('Envio -- DB --- Alarma Incendio....')
+        return
+
     elif (ultimo >= 1000) and (ultimo < 1500): # intoxicacion
         mandarAlarma(2)
+
+        point = Point("alarmas").field("alarma", 'Alarma Intoxicacion')
+        write_api.write('Alarma', my_org, point)
+        print('Envio -- DB --- Alarma intoxicacion....')
+        return
+
     if (predict_metano_RFR >= 1500) and (ultimo > penultimo):   # prediccion incendio 
         mandarAlarma(1)
+
+        point = Point("alarmas").field("alarma", 'Alarma Incendio')
+        write_api.write('Alarma', my_org, point)
+        print('Envio -- DB --- Alarma Incendio....')
+        return
+    
     elif (predict_metano_RFR >= 1000) and (ultimo > penultimo): # prediccion intoxicacion
         mandarAlarma(2)
+
+        point = Point("alarmas").field("alarma", 'Alarma Intoxicacion')
+        write_api.write('Alarma', my_org, point)
+        print('Envio -- DB --- Alarma intoxicacion....')
+        return
+        
     else:
         mandarAlarma(0)
+
+        point = Point("alarmas").field("alarma", 'Libre de Riesgo')
+        write_api.write('Alarma', my_org, point)
+        print('Envio -- DB --- Libre de Riesgo....')
+        return        
 
 def process_function(msg):
     message = msg.decode("utf-8")
