@@ -1,0 +1,70 @@
+version: '3.3'
+
+services:
+  influxdb:
+    container_name: influxdbIoT
+    image: influxdb
+    restart: always
+    env_file:
+      - ./credentials.env
+    volumes:
+      - /tmp/testdata/influx:/root/.influxdbv2
+    ports:
+      - "8086:8086"
+    networks:
+      default:
+        aliases:
+          - influxdb
+  grafana:
+    container_name: grafanaiot
+    image: grafanaiot 
+    build:
+      context: .
+      dockerfile: Dockerfile.grafana
+    restart: always
+    ports:
+      - "3000:3000"
+  proxy:
+    container_name: proxyiot
+    image: proxyiot
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile.proxy
+    env_file:
+      - ./credentials.env
+    volumes:
+      - ./app:/app
+    ports:
+      - "8888:8888"
+    depends_on:
+      - rabbit
+    links:
+      - rabbit
+  rabbit:
+    container_name: rabbitiot
+    image: rabbitiot
+    restart: always
+    build: 
+      context: .
+      dockerfile: Dockerfile.rabbit
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+      - "1883:1883"
+    networks:
+      default:
+        aliases:
+          - rabbit
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://rabbit:15672"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    
+networks:
+  default:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/24
