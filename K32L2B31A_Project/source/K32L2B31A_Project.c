@@ -10,6 +10,9 @@
  * @file    K32L2B31A_Project.c
  * @brief   Application entry point.
  */
+#include <sensorHume.h>
+#include <sensorMeta.h>
+#include <sensorTemp.h>
 #include <stdio.h>
 #include "board.h"
 #include "peripherals.h"
@@ -22,8 +25,9 @@
 #include "irq_lptmr0.h"
 #include "irq_lpuart0.h"
 #include "modem.h"
-#include "sensor_temp.h"
-
+#include "sensorHume.h"
+#include "sensorMeta.h"
+#include "sensorTemp.h"
 
 /* TODO: insert other definitions and declarations here. */
 
@@ -81,13 +85,12 @@ int main(void) {
     Timer_Init();
     Modem_Init();
     Alarma_Init();
-    float voltaje1;
-    int e;
+    int var;
     while(1) {
-    	//Modem_Task_Run();
-    	voltaje1 = SenTempObtenerDatoCenti();
-    	printf("%f Volt\r\n",voltaje1);
-    	for (e = 0; e < 8000000; ++e) {
+//    	Modem_Task_Run();
+    	printf("%.2f --- %.2f ---- %.2f\r\n",
+    			SenHumeObtenerDatoRH(), SenTempObtenerDatoCenti(), SenMetaObtenerDatoppm());
+    	for (var = 0; var < 0xFFFFFF; ++var) {
 
 		}
     }

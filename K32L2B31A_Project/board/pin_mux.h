@@ -25,6 +25,47 @@ extern "C" {
  */
 void BOARD_InitBootPins(void);
 
+/*! @name PORTD6 (number 63), J2[8]/D11/SPI1_MOSI/LCD_P46
+  @{ */
+
+/* Symbols to be used with GPIO driver */
+#define BOARD_LED_ALARMA_FGPIO FGPIOD             /*!<@brief FGPIO peripheral base pointer */
+#define BOARD_LED_ALARMA_GPIO GPIOD               /*!<@brief GPIO peripheral base pointer */
+#define BOARD_LED_ALARMA_GPIO_PIN_MASK (1U << 6U) /*!<@brief GPIO pin mask */
+
+/* Symbols to be used with PORT driver */
+#define BOARD_LED_ALARMA_PORT PORTD               /*!<@brief PORT peripheral base pointer */
+#define BOARD_LED_ALARMA_PIN 6U                   /*!<@brief PORT pin number */
+#define BOARD_LED_ALARMA_PIN_MASK (1U << 6U)      /*!<@brief PORT pin mask */
+                                                  /* @} */
+
+/*! @name PORTB1 (number 36), J4[4]/A1/LCD_P1
+  @{ */
+
+/* Symbols to be used with PORT driver */
+#define BOARD_SenMeta_PORT PORTB               /*!<@brief PORT peripheral base pointer */
+#define BOARD_SenMeta_PIN 1U                   /*!<@brief PORT pin number */
+#define BOARD_SenMeta_PIN_MASK (1U << 1U)      /*!<@brief PORT pin mask */
+                                               /* @} */
+
+/*! @name PORTB2 (number 37), J4[6]/A2/LCD_P2
+  @{ */
+
+/* Symbols to be used with PORT driver */
+#define BOARD_SenHume_PORT PORTB               /*!<@brief PORT peripheral base pointer */
+#define BOARD_SenHume_PIN 2U                   /*!<@brief PORT pin number */
+#define BOARD_SenHume_PIN_MASK (1U << 2U)      /*!<@brief PORT pin mask */
+                                               /* @} */
+
+/*! @name PORTB3 (number 38), J4[8]/A3/LCD_P3
+  @{ */
+
+/* Symbols to be used with PORT driver */
+#define BOARD_SenTemp_PORT PORTB               /*!<@brief PORT peripheral base pointer */
+#define BOARD_SenTemp_PIN 3U                   /*!<@brief PORT pin number */
+#define BOARD_SenTemp_PIN_MASK (1U << 3U)      /*!<@brief PORT pin mask */
+                                               /* @} */
+
 /*!
  * @brief Configures pin routing and optionally pin electrical features.
  *

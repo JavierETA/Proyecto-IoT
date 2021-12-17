@@ -8,7 +8,7 @@
     <stringAttribute key="com.crt.ctrlcenter.currentWireType" value="SWD"/>
     <booleanAttribute key="com.crt.ctrlcenter.mainBreakIsHardware" value="true"/>
     <booleanAttribute key="com.crt.ctrlcenter.saveState" value="true"/>
-    <stringAttribute key="com.crt.ctrlcenter.serialNumber" value="LinkServerARMCMSIS-DAP0262000060634e4500328012200a00553271000197969900"/>
+    <stringAttribute key="com.crt.ctrlcenter.serialNumber" value="LinkServerARMCMSIS-DAP0262000060634e4500628012200a002b3271000197969900"/>
     <mapAttribute key="com.crt.ctrlcenter.symbolsGroupSettings"/>
     <intAttribute key="com.crt.ctrlcenter.version" value="6"/>
     <stringAttribute key="com.nxp.mcuxpresso.flash.base.address" value="0x0"/>

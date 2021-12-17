@@ -10,6 +10,9 @@
  * Includes
  ******************************************************************************/
 
+#include <sensorHume.h>
+#include <sensorMeta.h>
+#include <sensorTemp.h>
 #include "modem.h"
 #include <stdio.h>
 #include "board.h"
@@ -18,7 +21,7 @@
 #include "clock_config.h"
 #include "K32L2B31A.h"
 #include "fsl_debug_console.h"
-
+#include "alarma.h"
 
 /*******************************************************************************
  * Definitions
@@ -126,7 +129,6 @@ void Modem_Task_Run(void){
 	Modem_Rta_Run();
 	switch(modemSt){
 	case ST_MOD_IDLE: // IDLE
-
 	break;
 	case ST_MOD_CFG:
 		Modem_Send_Cmd("ATE0\r\n"); 								// ATE0 Quitar ECO
@@ -173,31 +175,29 @@ void Modem_Task_Run(void){
 		Modem_Rta_Cmd(TIME_WAIT_RTA_CMD,"OK",ST_MOD_OPEN_MQTT,ST_MOD_ACT_CTX); 	//rx "OK"
 	break;
 	case ST_MOD_OPEN_MQTT:
-		Modem_Send_Cmd("AT+QMTOPEN=0,\"34.215.212.114\",1883\r\n"); //tx "AT+QMTOPEN=0,"142.93.88.99",1883"
+		Modem_Send_Cmd("AT+QMTOPEN=0,\"20.121.197.141\",1883\r\n"); //tx "AT+QMTOPEN=0,"142.93.88.99",1883"
 		Modem_Rta_Cmd(TIME_WAIT_RTA_CMD,"+QMTOPEN: 0,0",ST_MOD_CONN_TOPIC,ST_MOD_OPEN_MQTT);
 	break;
 	case ST_MOD_CONN_TOPIC:
-		Modem_Send_Cmd("AT+QMTCONN=0,\"LAB1\"\r\n");	//tx "AT+QMTCONN=0,"TOPICO_APP""
+		Modem_Send_Cmd("AT+QMTCONN=0,\"topic/mensajes\"\r\n");	//tx "AT+QMTCONN=0,"TOPICO_APP""
 		Modem_Rta_Cmd(TIME_WAIT_RTA_CMD,"+QMTCONN: 0,0,0",ST_MOD_SUB_TOPIC,ST_MOD_OPEN_MQTT);
 	break;
 	case ST_MOD_SUB_TOPIC:
-		Modem_Send_Cmd("AT+QMTSUB=0 ,1,\"LAB1\",1\r\n");	//tx "AT+QMTCONN=0,"TOPICO_APP""
+		Modem_Send_Cmd("AT+QMTSUB=0 ,1,\"topic/mensajes\",1\r\n");	//tx "AT+QMTCONN=0,"TOPICO_APP""
 		Modem_Rta_Cmd(TIME_WAIT_RTA_CMD,"+QMTSUB: 0,1,0,1",ST_MOD_CONN_PUB,ST_MOD_CONN_TOPIC);
 	break;
 	case ST_MOD_CONN_PUB:
-		Modem_Send_Cmd("AT+QMTPUB=0,0,0,0,\"LAB1\"\r\n");
+		Modem_Send_Cmd("AT+QMTPUB=0,0,0,0,\"topic/mediciones\"\r\n");
 		Modem_Rta_Cmd(TIME_WAIT_RTA_CMD,">",ST_MOD_PUBLIC_DAT,ST_MOD_OPEN_MQTT);
 	break;
 	case ST_MOD_PUBLIC_DAT:
+		printf("%f,%f,%f \r\n",SenTempObtenerDatoCenti(),SenHumeObtenerDatoRH(),SenMetaObtenerDatoppm());
 		putchar(CNTL_Z);
 		Modem_Rta_Cmd(TIME_WAIT_RTA_CMD,"OK",ST_MOD_KEEP_ALIVE,ST_MOD_CONN_PUB);
-//		Modem_Rta_Cmd(5,"OK",ST_MOD_CHK_URC,ST_MOD_CONN_PUB);
-//		recibiMsgQtt = 0;
 	break;
-
 	case ST_MOD_KEEP_ALIVE:
 		Modem_Send_Cmd("AT\r\n");
-		Modem_Rta_Cmd(3, "OK", ST_MOD_CHK_URC, ST_MOD_KEEP_ALIVE);
+		Modem_Rta_Cmd(3, "OK", ST_MOD_CONN_PUB, ST_MOD_KEEP_ALIVE);
 	break;
 	case ST_MOD_CHK_URC:
 		if(Recibido_URC()){
@@ -265,19 +265,21 @@ void Modem_Rta_Run(void){
 	}
 }
 
-extern uint8_t ledapagado;
 void Modem_Check_URC_Run(void){
 	//!!! Recepcion de URCs
 	if(Respuesta_Modem("+QMTRECV")){ // mensaje MQTT
 		recibiMsgQtt = 1;
-		if(Test_Rta_Modem("LED ON")){
+		if(Test_Rta_Modem("activar")){
 			//led_on_green();
-		}
-	}else{  // algun otro URC
-		if(Test_Rta_Modem("OK")){
+			activarAlarma();
 
 		}
+	}else {
+		if(Test_Rta_Modem("desactivar")){	// algun otro URC
+			apagarAlarma();
+		}
 	}
+
 }
 
 char Recibido_URC(void){

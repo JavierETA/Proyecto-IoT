@@ -115,27 +115,39 @@ instance:
       - 0:
         - channelName: ''
         - enableDifferentialConversion: 'false'
-        - channelNumber: 'SE.13'
+        - channelNumber: 'SE.8'
         - enableInterruptOnConversionCompleted: 'false'
         - channelGroup: '0'
         - initializeChannel: 'true'
       - 1:
         - channelName: ''
         - enableDifferentialConversion: 'false'
-        - channelNumber: 'SE.8'
+        - channelNumber: 'SE.9'
+        - enableInterruptOnConversionCompleted: 'false'
+        - channelGroup: '0'
+        - initializeChannel: 'false'
+      - 2:
+        - channelName: ''
+        - enableDifferentialConversion: 'false'
+        - channelNumber: 'SE.0'
         - enableInterruptOnConversionCompleted: 'false'
         - channelGroup: '0'
         - initializeChannel: 'false'
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS **********/
 /* clang-format on */
-adc16_channel_config_t ADC0_channelsConfig[2] = {
+adc16_channel_config_t ADC0_channelsConfig[3] = {
   {
-    .channelNumber = 13U,
+    .channelNumber = 8U,
     .enableDifferentialConversion = false,
     .enableInterruptOnConversionCompleted = false,
   },
   {
-    .channelNumber = 8U,
+    .channelNumber = 9U,
+    .enableDifferentialConversion = false,
+    .enableInterruptOnConversionCompleted = false,
+  },
+  {
+    .channelNumber = 0U,
     .enableDifferentialConversion = false,
     .enableInterruptOnConversionCompleted = false,
   }

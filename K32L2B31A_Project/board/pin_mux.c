@@ -25,7 +25,7 @@ pin_labels:
 - {pin_num: '29', pin_signal: PTA13/TPM1_CH1, label: 'J2[2]/D8'}
 - {pin_num: '59', pin_signal: LCD_P42/PTD2/SPI0_MOSI/UART2_RX/TPM0_CH2/SPI0_MISO/FXIO0_D2, label: 'J2[4]/D9/LCD_P42', identifier: LCD_P42}
 - {pin_num: '61', pin_signal: LCD_P44/PTD4/LLWU_P14/SPI1_SS/UART2_RX/TPM0_CH4/FXIO0_D4, label: 'J2[6]/D10/SPI1_PCS0/LCD_P44', identifier: LCD_P44}
-- {pin_num: '63', pin_signal: LCD_P46/ADC0_SE7b/PTD6/LLWU_P15/SPI1_MOSI/LPUART0_RX/SPI1_MISO/FXIO0_D6, label: 'J2[8]/D11/SPI1_MOSI/LCD_P46'}
+- {pin_num: '63', pin_signal: LCD_P46/ADC0_SE7b/PTD6/LLWU_P15/SPI1_MOSI/LPUART0_RX/SPI1_MISO/FXIO0_D6, label: 'J2[8]/D11/SPI1_MOSI/LCD_P46', identifier: LED_ALARMA}
 - {pin_num: '64', pin_signal: LCD_P47/PTD7/SPI1_MISO/LPUART0_TX/SPI1_MOSI/FXIO0_D7, label: 'J2[10]/D12/SPI1_MISO/LCD_P47'}
 - {pin_num: '62', pin_signal: LCD_P45/ADC0_SE6b/PTD5/SPI1_SCK/UART2_TX/TPM0_CH5/FXIO0_D5, label: 'J2[12]/D13/SPI1_SCK/LED1/LCD_P45', identifier: LED1}
 - {pin_num: '1', pin_signal: LCD_P48/PTE0/CLKOUT32K/SPI1_MISO/LPUART1_TX/RTC_CLKOUT/CMP0_OUT/I2C1_SDA, label: 'J2[18]/J4[9]/D14/I2C1_SDA/CMP0_OUT/LCD_P48', identifier: I2C1_SDA}
@@ -44,9 +44,9 @@ pin_labels:
 - {pin_num: '10', pin_signal: LCD_P60/ADC0_DM0/ADC0_SE4a/PTE21/TPM1_CH1/LPUART0_RX/FXIO0_D5, label: 'J4[3]/DIFF_ADC0_DM/LCD_P60', identifier: LCD_P60}
 - {pin_num: '9', pin_signal: LCD_P59/ADC0_DP0/ADC0_SE0/PTE20/TPM1_CH0/LPUART0_TX/FXIO0_D4, label: 'J4[1]/DIFF_ADC0_DP/LCD_P59', identifier: LCD_P59}
 - {pin_num: '35', pin_signal: LCD_P0/ADC0_SE8/PTB0/LLWU_P5/I2C0_SCL/TPM1_CH0, label: 'J4[2]/A0/LCD_P0'}
-- {pin_num: '36', pin_signal: LCD_P1/ADC0_SE9/PTB1/I2C0_SDA/TPM1_CH1, label: 'J4[4]/A1/LCD_P1'}
-- {pin_num: '37', pin_signal: LCD_P2/ADC0_SE12/PTB2/I2C0_SCL/TPM2_CH0, label: 'J4[6]/A2/LCD_P2'}
-- {pin_num: '38', pin_signal: LCD_P3/ADC0_SE13/PTB3/I2C0_SDA/TPM2_CH1, label: 'J4[8]/A3/LCD_P3'}
+- {pin_num: '36', pin_signal: LCD_P1/ADC0_SE9/PTB1/I2C0_SDA/TPM1_CH1, label: 'J4[4]/A1/LCD_P1', identifier: Sen_;SenMeta}
+- {pin_num: '37', pin_signal: LCD_P2/ADC0_SE12/PTB2/I2C0_SCL/TPM2_CH0, label: 'J4[6]/A2/LCD_P2', identifier: SenHume}
+- {pin_num: '38', pin_signal: LCD_P3/ADC0_SE13/PTB3/I2C0_SDA/TPM2_CH1, label: 'J4[8]/A3/LCD_P3', identifier: SenTemp}
 - {pin_num: '45', pin_signal: LCD_P22/ADC0_SE11/PTC2/I2C1_SDA/TPM0_CH1, label: 'J4[10]/A4/LCD_P22'}
 - {pin_num: '44', pin_signal: LCD_P21/ADC0_SE15/PTC1/LLWU_P6/RTC_CLKIN/I2C1_SCL/TPM0_CH0, label: 'J4[12]/A5/LCD_P21'}
 - {pin_num: '5', pin_signal: USB0_DP, label: 'J10[3]/USB_DP', identifier: USB0_DP}
@@ -107,7 +107,12 @@ void BOARD_InitBootPins(void)
  * TEXT BELOW IS USED AS SETTING FOR TOOLS *************************************
 BOARD_InitPins:
 - options: {callFromInitBoot: 'true', prefix: BOARD_, coreID: core0, enableClock: 'true'}
-- pin_list: []
+- pin_list:
+  - {pin_num: '63', peripheral: GPIOD, signal: 'GPIO, 6', pin_signal: LCD_P46/ADC0_SE7b/PTD6/LLWU_P15/SPI1_MOSI/LPUART0_RX/SPI1_MISO/FXIO0_D6, direction: OUTPUT,
+    gpio_init_state: 'false', pull_select: no_init, passive_filter: no_init}
+  - {pin_num: '36', peripheral: ADC0, signal: 'SE, 9', pin_signal: LCD_P1/ADC0_SE9/PTB1/I2C0_SDA/TPM1_CH1, identifier: SenMeta, pull_select: no_init, pull_enable: disable}
+  - {pin_num: '37', peripheral: ADC0, signal: 'SE, 12', pin_signal: LCD_P2/ADC0_SE12/PTB2/I2C0_SCL/TPM2_CH0, pull_select: no_init, pull_enable: disable}
+  - {pin_num: '38', peripheral: ADC0, signal: 'SE, 13', pin_signal: LCD_P3/ADC0_SE13/PTB3/I2C0_SDA/TPM2_CH1, pull_select: no_init, pull_enable: disable}
  * BE CAREFUL MODIFYING THIS COMMENT - IT IS YAML SETTINGS FOR TOOLS ***********
  */
 /* clang-format on */
@@ -120,6 +125,50 @@ BOARD_InitPins:
  * END ****************************************************************************************************************/
 void BOARD_InitPins(void)
 {
+    /* Port B Clock Gate Control: Clock enabled */
+    CLOCK_EnableClock(kCLOCK_PortB);
+    /* Port D Clock Gate Control: Clock enabled */
+    CLOCK_EnableClock(kCLOCK_PortD);
+
+    gpio_pin_config_t LED_ALARMA_config = {
+        .pinDirection = kGPIO_DigitalOutput,
+        .outputLogic = 0U
+    };
+    /* Initialize GPIO functionality on pin PTD6 (pin 63)  */
+    GPIO_PinInit(BOARD_LED_ALARMA_GPIO, BOARD_LED_ALARMA_PIN, &LED_ALARMA_config);
+
+    /* PORTB1 (pin 36) is configured as ADC0_SE9 */
+    PORT_SetPinMux(BOARD_SenMeta_PORT, BOARD_SenMeta_PIN, kPORT_PinDisabledOrAnalog);
+
+    PORTB->PCR[1] = ((PORTB->PCR[1] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_PE_MASK | PORT_PCR_ISF_MASK)))
+
+                     /* Pull Enable: Internal pullup or pulldown resistor is not enabled on the corresponding pin. */
+                     | PORT_PCR_PE(kPORT_PullDisable));
+
+    /* PORTB2 (pin 37) is configured as ADC0_SE12 */
+    PORT_SetPinMux(BOARD_SenHume_PORT, BOARD_SenHume_PIN, kPORT_PinDisabledOrAnalog);
+
+    PORTB->PCR[2] = ((PORTB->PCR[2] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_PE_MASK | PORT_PCR_ISF_MASK)))
+
+                     /* Pull Enable: Internal pullup or pulldown resistor is not enabled on the corresponding pin. */
+                     | PORT_PCR_PE(kPORT_PullDisable));
+
+    /* PORTB3 (pin 38) is configured as ADC0_SE13 */
+    PORT_SetPinMux(BOARD_SenTemp_PORT, BOARD_SenTemp_PIN, kPORT_PinDisabledOrAnalog);
+
+    PORTB->PCR[3] = ((PORTB->PCR[3] &
+                      /* Mask bits to zero which are setting */
+                      (~(PORT_PCR_PE_MASK | PORT_PCR_ISF_MASK)))
+
+                     /* Pull Enable: Internal pullup or pulldown resistor is not enabled on the corresponding pin. */
+                     | PORT_PCR_PE(kPORT_PullDisable));
+
+    /* PORTD6 (pin 63) is configured as PTD6 */
+    PORT_SetPinMux(BOARD_LED_ALARMA_PORT, BOARD_LED_ALARMA_PIN, kPORT_MuxAsGpio);
 }
 
 /* clang-format off */
